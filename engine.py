@@ -6,7 +6,7 @@ allword =[]
 for l in lines:
   allword.append(l.replace("\n",""))
   
-  inputWord = input("enter the letters :: ")
+inputWord = input("enter the letters :: ")
 inputWord = inputWord.lower()
 listOfLetters = list(inputWord)
 listOfLetters.sort()
