@@ -40,3 +40,10 @@ while(k==False):
     k = False
 
 print(selectedWords)
+
+from definition import meaningGet
+
+for wordFound in selectedWords:
+  print(wordFound + " :: ")
+  meaningGet(wordFound)
+  print("")
