@@ -1,49 +1,50 @@
-with open("words_alpha.txt", "r") as engWord:
-  lines = engWord.readlines()
+def load_words(file_path):
+    with open(file_path, "r") as file:
+        return [line.strip() for line in file]
 
-allword =[]
+def filter_words_by_length(words, length):
+    return [word for word in words if len(word) == length]
 
-for l in lines:
-  allword.append(l.replace("\n",""))
-  
-inputWord = input("enter the letters :: ")
-inputWord = inputWord.lower()
-listOfLetters = list(inputWord)
-listOfLetters.sort()
-listOfLetters = list(set(listOfLetters))
-listOfLetters.sort()
+def is_valid_word(word, letter_counts):
+    word_letter_counts = {}
+    for letter in word:
+        if letter in word_letter_counts:
+            word_letter_counts[letter] += 1
+        else:
+            word_letter_counts[letter] = 1
+    
+    for letter, count in word_letter_counts.items():
+        if letter_counts.get(letter, 0) != count:
+            return False
+    return True
 
+def find_matching_words(input_word, words):
+    input_word = input_word.lower()
+    letter_counts = {}
+    for letter in input_word:
+        if letter in letter_counts:
+            letter_counts[letter] += 1
+        else:
+            letter_counts[letter] = 1
+    
+    candidate_words = filter_words_by_length(words, len(input_word))
+    return [word for word in candidate_words if is_valid_word(word, letter_counts)]
 
-selectedWords=[x for x in allword if len(x)==len(inputWord)]
-
-
-def finalCode():
-  for letter1 in listOfLetters:
-    for word1 in selectedWords:
-      if (word1.count(letter1) == inputWord.count(letter1)):
-        continue
-      else:
-        selectedWords.remove(word1)
-  return len(selectedWords)
-
-len1 = finalCode()
-len2 = finalCode()
-
-k = False
-
-while(k==False):
-  if(len1 == len2):
-    k = True
-  else:
-    len1 = len2
-    len2 = finalCode()
-    k = False
-
-print(selectedWords)
+def main():
+    all_words = load_words("words_alpha.txt")
+    input_word = input("Enter the letters: ").strip()
+    matching_words = find_matching_words(input_word, all_words)
+    
+    for word in matching_words:
+        print(word)
+        print_word_meanings(word)
 
 from definition import meaningGet
 
-for wordFound in selectedWords:
-  print(wordFound + " :: ")
-  meaningGet(wordFound)
-  print("")
+def print_word_meanings(word):
+    print(f"{word} ::")
+    meaningGet(word)
+    print("")
+
+if __name__ == "__main__":
+    main()
